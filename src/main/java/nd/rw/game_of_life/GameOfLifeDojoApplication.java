@@ -1,4 +1,4 @@
-package nd.rw.gameoflifedojo;
+package nd.rw.game_of_life;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

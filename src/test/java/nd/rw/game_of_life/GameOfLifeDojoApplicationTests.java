@@ -1,4 +1,4 @@
-package nd.rw.gameoflifedojo;
+package nd.rw.game_of_life;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
