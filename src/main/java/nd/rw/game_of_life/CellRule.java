@@ -1,6 +1,10 @@
 package nd.rw.game_of_life;
 
+import nd.rw.game_of_life.BoardCell.State;
+
 import java.util.List;
+
+import static nd.rw.game_of_life.BoardCell.State.*;
 
 public class CellRule {
 
@@ -10,7 +14,8 @@ public class CellRule {
     this.cellNeighbours = cellNeighbours;
   }
 
-  public BoardCell.State calculateNextState() {
-
+  public State calculateNextState() {
+    long aliveNeighbours = cellNeighbours.stream().filter(cell -> cell.getState() == ALIVE).count();
+    return aliveNeighbours == 2 || aliveNeighbours == 3 ? ALIVE : DEAD;
   }
 }
