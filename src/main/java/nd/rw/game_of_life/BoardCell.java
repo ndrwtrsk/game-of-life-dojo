@@ -2,8 +2,11 @@ package nd.rw.game_of_life;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
+
+import static nd.rw.game_of_life.BoardCell.State.*;
 
 @ToString
 @EqualsAndHashCode
@@ -15,13 +18,8 @@ public class BoardCell {
   @Getter
   private final int column;
 
-  @Getter
-  @Setter
-  private State state = State.DEAD;
-
-  @Getter
-  @Setter
-  private State nextState = State.DEAD;
+  private State state = DEAD;
+  private State nextState = NONE;
 
   public BoardCell(int row, int column) {
     this.row = row;
@@ -34,7 +32,22 @@ public class BoardCell {
     this.state = state;
   }
 
+  public void computeNextStateWithAccessor(CellNeighbourAccessor accessor){
+    List<BoardCell> neighbours = accessor.collectNeighbours(this);
+    CellRule rule = new CellRule(neighbours);
+    nextState = rule.calculateNextState();
+  }
+
+  public void activateNextState(){
+    state = nextState;
+    nextState = NONE;
+  }
+
+  public boolean isAlive(){
+    return state == ALIVE;
+  }
+
   public enum State {
-    ALIVE, DEAD
+    ALIVE, DEAD, NONE
   }
 }

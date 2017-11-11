@@ -15,7 +15,7 @@ public class CellRule {
   }
 
   public State calculateNextState() {
-    long aliveNeighbours = cellNeighbours.stream().filter(cell -> cell.getState() == ALIVE).count();
+    long aliveNeighbours = cellNeighbours.stream().filter(BoardCell::isAlive).count();
     return aliveNeighbours == 2 || aliveNeighbours == 3 ? ALIVE : DEAD;
   }
 }

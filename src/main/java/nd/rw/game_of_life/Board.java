@@ -6,12 +6,12 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class Board implements CellNeighbourAccessor {
 
-  @Getter
   private final Integer numberOfRows, numberOfColumns;
   private Table<Integer, Integer, BoardCell> board;
 
@@ -32,12 +32,23 @@ public class Board implements CellNeighbourAccessor {
 
   @Override
   public List<BoardCell> collectNeighbours(BoardCell cell) {
-    int x = cell.getRow(), y = cell.getColumn();
-    return board.cellSet().stream()
-        .filter(tableCell -> tableCell.getValue() != cell)
-        .filter(tableCell -> Math.abs(x - tableCell.getRowKey()) >= 1 ||
-            Math.abs(y - tableCell.getColumnKey()) >= 1)
+    int cellColumn = cell.getColumn(),
+        cellRow = cell.getRow();
+    return board.cellSet()
+        .stream()
+        .filter(tableCell -> !Objects.equals(tableCell.getValue(), cell))
+        .filter(tableCell -> {
+          int x = Math.abs(cellColumn - tableCell.getColumnKey());
+          int y = Math.abs(cellRow - tableCell.getRowKey());
+          return calculateVector(x, y) == 1;
+        })
         .map(Table.Cell::getValue)
         .collect(Collectors.toList());
+  }
+
+  private int calculateVector(int x, int y){
+    x = x == 0 ? 1 : x;
+    y = y == 0 ? 1 : y;
+    return x * y;
   }
 }
